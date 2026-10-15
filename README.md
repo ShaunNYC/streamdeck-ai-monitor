@@ -2,8 +2,9 @@
 
 # Agent Pulse — AI agent monitor for Stream Deck Neo
 
-Monitor Codex and Claude task activity, completion, and observed working time
-on your Stream Deck Neo, with a calendar on your Mac.
+Agent Pulse is an **AI agent monitor for Elgato Stream Deck Neo on macOS**.
+Track **OpenAI Codex** and **Claude Code** task activity, completion, recorded plan
+progress, and observed working time, with a calendar on your Mac.
 
 **Supported device: Stream Deck Neo only.** Other Stream Deck models are not supported.
 
