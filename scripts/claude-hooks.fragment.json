@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "SessionEnd": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "PostToolUse": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "PostToolUseFailure": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "Notification": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "StopFailure": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs", "async": true }] }],
+    "PermissionRequest": [{ "hooks": [{ "type": "command", "command": "node /ABSOLUTE/PATH/TO/stream deck/scripts/claude-hook.mjs" }] }]
+  }
+}

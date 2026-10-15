@@ -1,0 +1,19 @@
+{
+	"name": "@streamdeck-supervisor/shared",
+	"version": "3.3.1",
+	"private": true,
+	"type": "module",
+	"types": "./dist/index.d.ts",
+	"main": "./dist/index.js",
+	"scripts": {
+		"build": "tsc"
+	},
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"node": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"license": "SEE LICENSE IN ../../LICENSE"
+}

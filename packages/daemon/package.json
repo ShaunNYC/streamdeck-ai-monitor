@@ -1,0 +1,32 @@
+{
+	"name": "@streamdeck-supervisor/daemon",
+	"version": "3.3.1",
+	"private": true,
+	"type": "module",
+	"main": "./dist/api.js",
+	"types": "./dist/api.d.ts",
+	"exports": {
+		".": {
+			"types": "./src/api.ts",
+			"node": "./dist/api.js",
+			"default": "./dist/api.js"
+		}
+	},
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "tsc",
+		"start": "node dist/index.js"
+	},
+	"dependencies": {
+		"@streamdeck-supervisor/shared": "*",
+		"acorn": "^8.16.0",
+		"ws": "^8.18.0"
+	},
+	"devDependencies": {
+		"@types/node": "~24.1.0",
+		"@types/ws": "^8.5.12",
+		"tsx": "^4.19.0",
+		"typescript": "^5.2.2"
+	},
+	"license": "SEE LICENSE IN ../../LICENSE"
+}

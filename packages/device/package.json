@@ -1,0 +1,32 @@
+{
+	"name": "@streamdeck-supervisor/device",
+	"version": "3.3.1",
+	"private": true,
+	"type": "module",
+	"main": "./dist/api.js",
+	"types": "./dist/api.d.ts",
+	"exports": {
+		".": {
+			"types": "./src/api.ts",
+			"node": "./dist/api.js",
+			"default": "./dist/api.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc",
+		"start": "node dist/index.js"
+	},
+	"dependencies": {
+		"@elgato-stream-deck/node": "^7.6.3",
+		"@streamdeck-supervisor/shared": "*",
+		"lucide-static": "^1.30.0",
+		"sharp": "^0.35.3",
+		"ws": "^8.19.0"
+	},
+	"devDependencies": {
+		"@types/node": "~24.1.0",
+		"@types/ws": "^8.5.12",
+		"typescript": "^5.2.2"
+	},
+	"license": "SEE LICENSE IN ../../LICENSE"
+}

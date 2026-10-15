@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'" />
+	<title>Agent Pulse</title>
+	<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+	<div class="window-shell">
+		<header class="native-toolbar">
+			<div class="toolbar-title" aria-label="Agent Pulse">
+				<strong>Agent Pulse</strong>
+				<span id="version" class="version"></span>
+			</div>
+			<div id="runtime-pill" class="runtime-pill pending" role="status"><span class="status-dot"></span><span>Checking</span></div>
+		</header>
+
+		<div id="notice" class="notice hidden" role="status" aria-live="polite"></div>
+
+		<div class="content-scroll" id="content-scroll">
+
+			<main id="view-settings" class="app-view settings-view">
+				<section class="view-heading settings-heading">
+					<div><h1>Settings</h1><p>Local agent integrations, project labels, and Stream Deck settings.</p></div>
+					<a class="button quiet-button" href="https://agent-pulse-2a1.pages.dev/privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+				</section>
+
+				<section class="glass-panel usage-panel" aria-label="Working time summary">
+                    <div class="usage-heading"><div><h2>Working Time</h2><p>Local dates · Parallel tasks counted once per agent</p></div><div class="usage-segments usage-agents" aria-label="Choose agent"><button type="button" data-usage-agent="codex" aria-pressed="true">Codex</button><button type="button" data-usage-agent="claude" aria-pressed="false">Claude</button></div></div>
+                    <div class="usage-overview"><div id="usage-cards"><p id="usage-summary-label">Today’s working time</p><strong id="usage-total">No records</strong><span id="usage-summary-date"></span></div><div id="usage-period" class="usage-segments" aria-label="Summary period"><button type="button" data-period="day" aria-pressed="true">Day</button><button type="button" data-period="week" aria-pressed="false">Week</button><button type="button" data-period="month" aria-pressed="false">Month</button><button type="button" data-period="year" aria-pressed="false">Year</button></div></div>
+                    <div class="usage-navigation"><strong id="usage-range"></strong><div><button id="usage-prev" class="usage-nav-button" type="button" aria-label="Previous period">‹</button><button id="usage-today" class="usage-nav-button" type="button">Today</button><button id="usage-next" class="usage-nav-button" type="button" aria-label="Next period">›</button></div></div>
+                    <div id="usage-calendar" class="usage-calendar" aria-label="Working time calendar"></div>
+                    <div id="usage-legend"><span>Full daily bar = 24 hours</span><span><i style="background:#2785E6"></i>≤4h</span><span><i style="background:#269964"></i>≤8h</span><span><i style="background:#D9AC24"></i>≤12h</span><span><i style="background:#DF525F"></i>≤16h</span><span><i style="background:#9561D8"></i>&gt;16h</span></div>
+                </section>
+				<section class="glass-panel settings-card device-card priority-device-card">
+					<div class="section-heading"><div><h2>Stream Deck & Startup</h2><p>Stream Deck Neo · <span id="device-state" class="device-state">Checking</span></p></div></div>
+
+					<label class="toggle-row"><span>Control Neo</span><input id="takeover-toggle" type="checkbox" role="switch" /><span class="toggle" aria-hidden="true"></span></label>
+                    <div id="mode-explanation" class="info-callout"></div>
+
+					<label class="field device-field"><span>Stream Deck Neo</span><select id="device-select"></select></label>
+					<div class="setting-rows">
+						<label class="toggle-row"><span>Launch at login</span><input id="login-toggle" type="checkbox" aria-describedby="login-help" /><span class="toggle" aria-hidden="true"></span></label>
+						<label class="toggle-row"><span>Show menu bar icon</span><input id="menu-bar-toggle" type="checkbox" /><span class="toggle" aria-hidden="true"></span></label>
+					</div>
+					<p id="login-help">Off by default. Enable and save to launch at login. Monitoring continues after this window closes; choose Quit in the menu bar to stop it.</p>
+					<div class="runtime-details"><span id="menu-bar-status"></span><span id="dock-status"></span></div>
+				</section>
+
+				<details class="readiness-panel glass-panel" open>
+					<summary>
+						<span class="readiness-icon" aria-hidden="true">✓</span>
+						<span><strong>Setup Status</strong><small id="setup-state">Checking…</small></span>
+						<span class="summary-action">View status</span>
+					</summary>
+					<div id="readiness" class="readiness-grid"></div>
+				</details>
+
+				<div class="settings-grid">
+					<div class="settings-column">
+						<section class="glass-panel settings-card">
+							<div class="section-heading"><div><h2>Agent Integrations</h2><p>Observe local agents while conversations stay in their original apps.</p></div></div>
+							<div id="agents" class="agent-list"></div>
+							<div id="codex-approval-control" class="permission-callout"></div>
+						</section>
+
+						<section class="glass-panel settings-card project-section">
+							<div class="section-heading"><div><h2>Project Labels</h2><p id="project-help">Set display names and optional verification commands for project folders.</p></div><button id="add-project" class="button quiet-button" type="button">Add project</button></div>
+							<div id="projects" class="project-list"></div>
+						</section>
+					</div>
+
+					<div class="settings-column">
+						<section class="glass-panel settings-card maintenance-card">
+							<div class="section-heading"><div><h2>Maintenance</h2><p>Diagnostics keep settings intact. Cleanup requires confirmation.</p></div></div>
+							<div class="maintenance-actions">
+								<button id="diagnostics" class="button quiet-button" type="button">Export diagnostics…</button>
+								<button id="rebuild-menu-bar" class="button quiet-button" type="button">Rebuild menu bar icon</button>
+								<button id="repair-codex-permission" class="button quiet-button" type="button">Repair permission…</button>
+								<button id="remove-integration" class="button danger-outline" type="button">Remove integrations…</button>
+							</div>
+						</section>
+					</div>
+				</div>
+
+				<footer class="footer-actions">
+					<p>Settings stay on this Mac. Save settings after changing launch at login.</p>
+					<button id="save" class="button primary save-button" type="button">Save settings</button>
+				</footer>
+			</main>
+		</div>
+	</div>
+
+	<dialog id="confirm-sheet" class="sheet-dialog confirm-dialog" aria-labelledby="confirm-sheet-title">
+		<div class="sheet-surface compact-sheet">
+			<div class="sheet-handle" aria-hidden="true"></div>
+			<header class="sheet-header">
+				<div id="confirm-sheet-symbol" class="sheet-symbol info-symbol" aria-hidden="true">i</div>
+				<div><h2 id="confirm-sheet-title">Confirm action</h2><p id="confirm-sheet-subtitle"></p></div>
+			</header>
+			<div id="confirm-sheet-content" class="sheet-content"></div>
+			<footer class="sheet-actions">
+				<button id="confirm-sheet-cancel" class="button quiet-button" type="button">Cancel</button>
+				<button id="confirm-sheet-submit" class="button primary" type="button">Confirm</button>
+			</footer>
+		</div>
+	</dialog>
+
+	<script type="module" src="./renderer.ts"></script>
+</body>
+</html>

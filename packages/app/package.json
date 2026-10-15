@@ -1,0 +1,43 @@
+{
+	"name": "@streamdeck-supervisor/app",
+	"productName": "Agent Pulse",
+	"version": "3.3.1",
+	"private": true,
+	"type": "module",
+	"main": "dist/main/main.js",
+	"description": "Local Stream Deck Neo supervisor for Codex and Claude",
+	"author": "Shaun Wang",
+	"license": "SEE LICENSE IN LICENSE",
+	"scripts": {
+		"build": "npm run build:native && npm run build:main && npm run build:preload && npm run build:renderer",
+		"build:native": "node scripts/build-native.mjs",
+		"build:icon": "node scripts/build-icon.mjs",
+		"build:menu-bar": "node scripts/build-menu-bar-assets.mjs",
+		"build:main": "vite build --config vite.main.config.ts && node scripts/copy-runtime-assets.mjs",
+		"build:preload": "vite build --config vite.preload.config.ts",
+		"build:renderer": "vite build --config vite.renderer.config.ts",
+		"typecheck": "tsc --noEmit",
+		"start": "npm run build && electron .",
+		"package": "npm run build:icon && npm run build:menu-bar && npm run build && electron-forge package --arch=arm64",
+		"make": "npm run build:icon && npm run build:menu-bar && npm run build && electron-forge make --arch=arm64",
+		"package:mas": "npm run build:icon && npm run build:menu-bar && npm run build && AGENT_PULSE_MAS=1 electron-forge package --platform=mas --arch=arm64"
+	},
+	"dependencies": {
+		"@elgato-stream-deck/node": "^7.6.3",
+		"acorn": "^8.16.0",
+		"lucide-static": "^1.30.0",
+		"sharp": "^0.35.3",
+		"ws": "^8.19.0"
+	},
+	"devDependencies": {
+		"@electron-forge/cli": "^7.9.0",
+		"@electron-forge/maker-dmg": "^7.9.0",
+		"@electron-forge/plugin-auto-unpack-natives": "^7.9.0",
+		"electron": "^43.2.0",
+		"typescript": "^5.2.2",
+		"vite": "^7.0.0"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}

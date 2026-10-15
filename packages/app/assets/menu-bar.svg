@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <mask id="back"><rect width="16" height="16" fill="white"/><rect x="3" y="3.7" width="5.4" height="1.4" rx=".7" fill="black"/><rect x="4.1" y="4.9" width="11.8" height="11" rx="2.6" fill="black"/></mask>
+    <mask id="front"><rect width="16" height="16" fill="white"/><rect x="7" y="11.2" width="5.7" height="1.4" rx=".7" fill="black"/><rect x="11.6" y="7.3" width="1.6" height="1.8" rx=".45" fill="black"/></mask>
+  </defs>
+  <rect x="1" y="1" width="10.1" height="10.7" rx="2" fill="black" mask="url(#back)"/>
+  <rect x="5" y="5.8" width="10" height="9.2" rx="2" fill="black" mask="url(#front)"/>
+</svg>
