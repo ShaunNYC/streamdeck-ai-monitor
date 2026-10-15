@@ -101,61 +101,6 @@ Agent accounts, service access, and hardware are obtained separately.
 The app interface and project documentation are available in **English only**.
 Task titles and activity text are shown in the language supplied by your agents.
 
-## Build from source
-
-Install Node.js 24 or later (including Node-API headers), npm, and Xcode
-Command Line Tools (`xcode-select --install`). From the repository root:
-
-```sh
-npm ci
-npm run build
-npm test
-```
-
-To open the development app after building:
-
-```sh
-npm run app:dev
-```
-
-To create a local independent app and DMG for your own use:
-
-```sh
-npm run prepare:app-deps
-npm run package:mac
-```
-
-The app bundle is under `packages/app/out/Agent Pulse-darwin-arm64/`; the DMG
-is under `packages/app/out/make/`. These are local build outputs, not public
-release artifacts. The normal local build requires neither the maintainer's
-signing credentials nor an Apple Developer membership. It is not Developer ID
-signed or notarized. macOS may require explicit approval to open it; keep
-macOS security protections enabled.
-
-Some integration checks require local IPC permissions; device checks need a
-connected Neo. Building or running tests does not install the app or verify
-your physical device. Development runs can use existing Agent Pulse settings
-and take control of the connected Neo.
-
-## Source build and App Store edition
-
-The default source build uses the independent configuration. The store edition
-uses a separate MAS / App Sandbox configuration; the editions are not identical.
-
-| Capability | Default source build | App Store edition |
-|---|---|---|
-| Neo task display and working time history | Yes | Yes |
-| Agent log access | Local integration settings | User-selected folders with revocable access |
-| Managed Codex and Claude hooks | Available | Not included |
-| Project verification and cross-app keyboard actions | Available with required permissions | Not included |
-| Task execution and approvals | Depends on integration | In the original agent apps |
-| Updates | Rebuild from source | Through the App Store |
-
-The MAS packaging script requires your own Apple signing identity, provisioning
-profile, and numeric build number. The maintainer's credentials are not part
-of the source build. This license does not authorize uploading your build to
-an app store or distributing it to external users.
-
 ## Dependencies and third-party licenses
 
 Node.js, npm, and Xcode Command Line Tools are build requirements; App Store
