@@ -1,9 +1,11 @@
 [**在 Mac App Store 下载 Agent Pulse**](https://apps.apple.com/app/id6815483068)
 
-# Agent Pulse
+# Agent Pulse — Stream Deck Neo AI 任务监控工具
 
 在 Stream Deck Neo 上查看 Codex 和 Claude 的任务状态、完成情况和观察到的工作时长，
 并在 Mac 上浏览活动日历。
+
+**支持的设备型号：仅 Stream Deck Neo。** 目前不支持其他 Stream Deck 型号。
 
 [English](README.md)
 

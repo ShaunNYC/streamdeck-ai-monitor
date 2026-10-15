@@ -1,10 +1,11 @@
 [**Download Agent Pulse on the Mac App Store**](https://apps.apple.com/app/id6815483068)
 
-# Agent Pulse
+# Agent Pulse — AI agent monitor for Stream Deck Neo
 
-Keep an eye on Codex and Claude from your Stream Deck Neo. Agent Pulse shows
-local task activity, completion, and observed working time, with a calendar
-on your Mac.
+Monitor Codex and Claude task activity, completion, and observed working time
+on your Stream Deck Neo, with a calendar on your Mac.
+
+**Supported device: Stream Deck Neo only.** Other Stream Deck models are not supported.
 
 [中文说明](README.zh-CN.md)
 
