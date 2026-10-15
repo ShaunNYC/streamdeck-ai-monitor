@@ -137,7 +137,7 @@ function isTerminal(task: Pick<Task, "status">): boolean {
 	return task.status === "DONE_UNREAD" || task.status === "DONE" || task.status === "ERROR";
 }
 
-/** Daemon 内存事实源；负责提醒版本、持久焦点和任务身份。 */
+/** In-memory daemon source of truth for attention versions, persistent focus, and task identity. */
 export class TaskRegistry {
 	private readonly tasks = new Map<string, Task>();
 	private readonly allocatedSlots = new Map<string, number>();
@@ -224,7 +224,7 @@ export class TaskRegistry {
 		};
 	}
 
-	/** 请求过期、运行失联和已读完成清理都不能制造新的提醒事件。 */
+	/** Expired requests, lost executions, and acknowledged completion cleanup must not create new attention events. */
 	sweep(now = Date.now(), runningStaleMs = RUNNING_STALE_MS, completedRetentionMs = TERMINAL_REMINDER_MS): boolean {
 		let didChange = false;
 		const toDelete: string[] = [];
@@ -558,7 +558,7 @@ export class TaskRegistry {
 		return true;
 	}
 
-	/** Logo 按键只切换到该 Agent 的最高优先级上下文，不循环、不确认。 */
+	/** The logo key selects the highest-priority context for its agent without cycling or acknowledging it. */
 	focusAgent(agent: AgentKind): Task | undefined {
 		const task = this.highestPriority(agent);
 		if (!task) return undefined;
@@ -580,7 +580,7 @@ export class TaskRegistry {
 		return task;
 	}
 
-	/** 只有成功打开完成/错误结果后才能确认；审批和输入必须由真实状态变化解决。 */
+	/** Acknowledge completion/error only after opening the result; approvals and input require an actual state change. */
 	acknowledgeReview(taskId: string, notify = true): boolean {
 		const task = this.getTask(taskId);
 		if (!task || !isPendingAttentionTask(task) || (task.status !== "DONE_UNREAD" && task.status !== "ERROR")) return false;

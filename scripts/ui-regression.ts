@@ -58,11 +58,11 @@ function longSample(agent: AgentKind = "codex"): Task {
 	const base = sample("RUNNING", agent);
 	return {
 		...base,
-		projectLabel: "国际化PROJECT🚀WITHANUNBROKENTOKEN",
-		titleShort: "修复超长标题与Supercalifragilisticexpialidocious🚀显示问题",
+		projectLabel: "\u56fd\u9645\u5316PROJECT🚀WITHANUNBROKENTOKEN",
+		titleShort: "\u4fee\u590d\u8d85\u957f\u6807\u9898\u4e0eSupercalifragilisticexpialidocious🚀\u663e\u793a\u95ee\u9898",
 		progress: {
 			...base.progress,
-			latestActivity: { category: "shell", state: "running", label: "正在验证 extraordinarily-long-unbroken-activity-token 🚀", at: now },
+			latestActivity: { category: "shell", state: "running", label: "\u6b63\u5728\u9a8c\u8bc1 extraordinarily-long-unbroken-activity-token 🚀", at: now },
 			todoCompleted: 12,
 			todoTotal: 24,
 		},
@@ -194,9 +194,9 @@ const pages: Record<string, string[]> = {
 	"claude-setup-page": [renderSystemTile("SETUP", "REQUIRED", COLORS.approval, "settings"), ...Array.from({ length: 7 }, () => empty("claude"))],
 	"long-content-page": [
 		renderTaskCard(longSample(), { overflowCount: 12 }),
-		renderPlanChoiceTile({ label: "international", description: "使用安全方式处理Supercalifragilisticexpialidocious🚀选项" }, "A"),
+		renderPlanChoiceTile({ label: "international", description: "\u4f7f\u7528\u5b89\u5168\u65b9\u5f0f\u5904\u7406Supercalifragilisticexpialidocious🚀\u9009\u9879" }, "A"),
 		renderSystemTile("CLAUDE SOURCE DISABLED", "ENABLE IN APP", COLORS.error, "circle-alert"),
-		renderMainTile({ label: "ACTIVITY", detail: "正在执行 EXTRAORDINARILY LONG VALIDATION 🚀", accent: COLORS.codex, icon: "activity", emphasis: "active", actionable: false, process: { kind: "activity", value: "正在执行 EXTRAORDINARILY LONG VALIDATION 🚀", footer: "LIVE · 99+" } }),
+		renderMainTile({ label: "ACTIVITY", detail: "\u6b63\u5728\u6267\u884c EXTRAORDINARILY LONG VALIDATION 🚀", accent: COLORS.codex, icon: "activity", emphasis: "active", actionable: false, process: { kind: "activity", value: "\u6b63\u5728\u6267\u884c EXTRAORDINARILY LONG VALIDATION 🚀", footer: "LIVE · 99+" } }),
 		...Array.from({ length: 4 }, () => empty("codex")),
 	],
 	"main-idle": baseMain(false),
@@ -275,7 +275,7 @@ async function main(): Promise<void> {
 
 	for (const [label, value, maxWidth, maxLines] of [
 		["English words", "Run extraordinarily detailed hardware regression checks", 76, 2],
-		["Chinese", "调整整套NEO硬件界面并确保所有文字清晰可读", 76, 2],
+		["Chinese", "\u8c03\u6574\u6574\u5957NEO\u786c\u4ef6\u754c\u9762\u5e76\u786e\u4fdd\u6240\u6709\u6587\u5b57\u6e05\u6670\u53ef\u8bfb", 76, 2],
 		["Emoji", "Validate 👩‍💻🚀🧪 hardware output", 76, 2],
 		["Unbroken token", "Supercalifragilisticexpialidocious", 49, 1],
 	] as const) {

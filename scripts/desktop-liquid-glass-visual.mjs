@@ -22,25 +22,25 @@ const capabilities = (desktop = {}) => ({
 });
 const running = {
 	taskId: "mock-running", agent: "codex", ownership: "managed", externalId: "thread-running", executionId: "turn-running",
-	projectId: "supervisor", projectLabel: "SUPERVISOR", cwd: "/Users/demo/AI Control Supervisor", titleShort: "整理桌面交互与状态映射",
+	projectId: "supervisor", projectLabel: "SUPERVISOR", cwd: "/Users/demo/AI Control Supervisor", titleShort: "Refine desktop interactions and status mapping",
 	status: "RUNNING", attentionCount: 0, capabilities: capabilities({ send: true, interrupt: true, changeSettings: true }),
-	progress: { latestActivity: { category: "file", label: "正在更新 Renderer", state: "running", at: now }, todoCompleted: 3, todoTotal: 5, currentTodo: "检查小窗口布局", activeSubagents: 1, totalSubagents: 2, turnStartedAt: now - 754_000, durationMs: 754_000, queueLength: 0, queueFailed: 0 },
+	progress: { latestActivity: { category: "file", label: "Updating the renderer", state: "running", at: now }, todoCompleted: 3, todoTotal: 5, currentTodo: "Check the compact window layout", activeSubagents: 1, totalSubagents: 2, turnStartedAt: now - 754_000, durationMs: 754_000, queueLength: 0, queueFailed: 0 },
 	openRef: { kind: "url", value: "codex://threads/mock-running" }, source: "mock", lastEventAt: now, startedAt: now - 754_000,
 };
 const approval = {
 	taskId: "mock-approval", agent: "claude", ownership: "observer", externalId: "session-approval", executionId: "turn-approval",
-	projectId: "marketing", projectLabel: "MARKETING", cwd: "/Users/demo/Marketing Site", titleShort: "发布营销站点预览",
+	projectId: "marketing", projectLabel: "MARKETING", cwd: "/Users/demo/Marketing Site", titleShort: "Publish the marketing site preview",
 	status: "APPROVAL", attentionCount: 1, attentionVersion: 1, acknowledgedAttentionVersion: 0,
 	request: { requestId: "request-approval-7f64b2", type: "network", target: "npm run deploy:preview", riskTier: 2, createdAt: now - 30_000, expiresAt: now + 600_000, decisionPath: "claude-hook" },
 	capabilities: capabilities({ approve: true, reject: true, interrupt: true }),
-	progress: { latestActivity: { category: "shell", label: "等待执行发布命令", state: "waiting", at: now - 30_000 }, todoCompleted: 4, todoTotal: 5, currentTodo: "部署预览", activeSubagents: 0, totalSubagents: 1, turnStartedAt: now - 221_000, durationMs: 221_000, queueLength: 0, queueFailed: 0 },
+	progress: { latestActivity: { category: "shell", label: "Waiting to run the deployment command", state: "waiting", at: now - 30_000 }, todoCompleted: 4, todoTotal: 5, currentTodo: "Deploy the preview", activeSubagents: 0, totalSubagents: 1, turnStartedAt: now - 221_000, durationMs: 221_000, queueLength: 0, queueFailed: 0 },
 	openRef: { kind: "url", value: "claude://session/mock-approval" }, source: "mock", lastEventAt: now - 30_000, startedAt: now - 221_000,
 };
 const done = {
 	taskId: "mock-done", agent: "codex", ownership: "observer", externalId: "thread-done",
-	projectId: "ios", projectLabel: "IOS APP", cwd: "/Users/demo/iOS App", titleShort: "修复登录状态回归",
+	projectId: "ios", projectLabel: "IOS APP", cwd: "/Users/demo/iOS App", titleShort: "Fix the sign-in state regression",
 	status: "DONE", attentionCount: 0, capabilities: capabilities(),
-	progress: { latestActivity: { category: "terminal", label: "测试已通过", state: "done", at: now - 180_000 }, todoCompleted: 4, todoTotal: 4, activeSubagents: 0, totalSubagents: 0, durationMs: 482_000, queueLength: 0, queueFailed: 0, recap: "已修复冷启动后的会话恢复问题，并通过现有回归测试。" },
+	progress: { latestActivity: { category: "terminal", label: "Tests passed", state: "done", at: now - 180_000 }, todoCompleted: 4, todoTotal: 4, activeSubagents: 0, totalSubagents: 0, durationMs: 482_000, queueLength: 0, queueFailed: 0, recap: "Fixed session restoration after a cold start and passed the existing regression tests." },
 	openRef: { kind: "url", value: "codex://threads/mock-done" }, source: "mock", lastEventAt: now - 180_000, startedAt: now - 662_000,
 };
 const config = {
@@ -56,8 +56,8 @@ const status = {
 	version: JSON.parse(fs.readFileSync(path.join(root,"package.json"),"utf8")).version, platformSupported: true, inApplicationsFolder: true, configured: true, runtimeRunning: true, openAtLogin: true, elgatoRunning: false,
 	desktopIntegration: { menuBar: { requested: true, state: "VISIBLE", imageLoaded: true }, dock: { state: "VISIBLE", windowVisible: true } },
 	agents: {
-		codex: { enabled: true, detected: true, health: "OK", detail: "Codex Desktop 已连接", runningCount: 1, decisionCount: 0 },
-		claude: { enabled: true, detected: true, health: "OK", detail: "Claude Desktop 已连接", runningCount: 0, decisionCount: 1 },
+		codex: { enabled: true, detected: true, health: "OK", detail: "Codex Desktop connected", runningCount: 1, decisionCount: 0 },
+		claude: { enabled: true, detected: true, health: "OK", detail: "Claude Desktop connected", runningCount: 0, decisionCount: 1 },
 	},
 	codexApprovalControl: { status: "READY", lastCheckedAt: now, permissionKind: "post-event", provider: "native-main-process", bundleId: "com.shaun-wang.streamdeck-ai-supervisor" },
 	device: { state: "CONNECTED", devices: [{ model: "Stream Deck Neo", path: "mock-neo", serialNumber: "CL12345678" }], scannedDevices: [{ model: "Stream Deck Neo", path: "mock-neo", serialNumber: "CL12345678" }], selectedSerialNumber: "CL12345678", productName: "Stream Deck Neo" },
@@ -162,18 +162,18 @@ function bridgeSource(mockStatus) {
         const days={};const hours=[0,2,4,6,8,10,12,14,16,18,22,5,7,3,9,4,6,3.4291667];
         for(let i=1;i<=18;i++) days['2026-09-'+String(i).padStart(2,'0')]={codex:Math.floor(hours[i-1]*3600000),claude:Math.floor(hours[18-i]*1800000)};
         mockStatus.monitor={selectedAgent:'codex',days,slots:{codex:[],claude:[]}};
-		const ok = async () => ({ ok: true, message: "操作成功" });
+		const ok = async () => ({ ok: true, message: "Action completed" });
 		window.__bridgeCalls = [];
 		window.__mockStatus = mockStatus;
 		Object.defineProperty(window, "supervisor", { configurable: true, value: {
 			getStatus: async () => structuredClone(mockStatus), chooseProject: async () => null,
-			saveSettings: ok, setMode: async mode => { if(window.__modeFailure) return {ok:false,message:"设备暂不可用"}; mockStatus.config.device.mode=mode; return {ok:true,message:"已切换"}; }, runDiagnostics: ok, requestCodexApprovalPermission: ok,
+			saveSettings: ok, setMode: async mode => { if(window.__modeFailure) return {ok:false,message:"Device temporarily unavailable"}; mockStatus.config.device.mode=mode; return {ok:true,message:"Mode updated"}; }, runDiagnostics: ok, requestCodexApprovalPermission: ok,
 			repairCodexApprovalPermission: ok, rebuildMenuBarIcon: ok, removeIntegration: ok,
 			deleteDesktopTasks: ok, clearDesktopTaskHistory: ok,
 			sendManagedMessage: async () => mockStatus.managedDetails[0], retryManagedMessage: async () => mockStatus.managedDetails[0],
 			updateManagedSettings: ok, interruptTask: ok,
-			decideRequest: async (...args) => { window.__bridgeCalls.push({ name: "decideRequest", args }); return window.__decisionResult ?? { ok: true, message: "操作成功" }; },
-			answerRequest: async (...args) => { window.__bridgeCalls.push({ name: "answerRequest", args }); return { ok: true, message: "回答已发送" }; },
+			decideRequest: async (...args) => { window.__bridgeCalls.push({ name: "decideRequest", args }); return window.__decisionResult ?? { ok: true, message: "Action completed" }; },
+			answerRequest: async (...args) => { window.__bridgeCalls.push({ name: "answerRequest", args }); return { ok: true, message: "Answer sent" }; },
 			openAgent: ok, openTask: ok,
 		} });
 	}`;

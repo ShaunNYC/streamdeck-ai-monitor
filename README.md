@@ -8,8 +8,6 @@ progress, and observed working time, with a calendar on your Mac.
 
 **Supported device: Stream Deck Neo only.** Other Stream Deck models are not supported.
 
-[中文说明](README.zh-CN.md)
-
 The App Store provides the official ready-to-install edition and its updates.
 Availability depends on release status and your storefront. Purchasing the app
 supports continued development. This repository provides source code only;
@@ -99,6 +97,9 @@ You need an **Apple Silicon Mac with macOS 13 or later**, a USB-connected
 **Stream Deck Neo**, and Codex and/or Claude with local task records. Other
 Stream Deck models, Intel Macs, Windows, iOS, and iPadOS are not supported.
 Agent accounts, service access, and hardware are obtained separately.
+
+The app interface and project documentation are available in **English only**.
+Task titles and activity text are shown in the language supplied by your agents.
 
 ## Build from source
 

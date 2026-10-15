@@ -1,12 +1,12 @@
 /**
- * Stream Deck Neo AI 控制台 — 统一数据模型
+ * Stream Deck Neo AI Console — Shared data model
  *
- * 这是插件(Device Layer)、Daemon 和各 Adapter 共享的唯一类型定义来源。
- * 参见 V3 Direct HID 架构。任何一方都不应该定义自己的一份平行 Task 结构——
- * 两套 schema 迟早会漂移,是这个共享包存在的唯一理由。
+ * The device layer, daemon, and adapters share these type definitions.
+ * Keep a single Task schema across the Direct HID architecture;
+ * independent copies would eventually drift apart.
  */
 
-/** 两个被监督的 Agent。 */
+/** The two monitored agents. */
 export type AgentKind = "codex" | "claude";
 
 /** Reasoning-effort values currently exposed by Codex and Claude desktop sessions. */
@@ -23,18 +23,18 @@ export function normalizeReasoningEffort(value: unknown): ReasoningEffort | unde
 }
 
 /**
- * 统一任务状态。对应方案 §二 / 原方案 §6.1 的状态表。
+ * Shared task states.
  *
- * - IDLE:      空白/无任务占用此槽位
- * - QUEUED:    已提交,尚未开始执行
- * - RUNNING:   正在执行,不需要人工介入
- * - APPROVAL:  明确的二选一权限审批请求(Approve/Reject 应该点亮)
- * - NEEDS_INPUT: 开放式问题,不是二选一(只有 OPEN/REPLY 进入强态,Approve/Reject 保持弱态)
- * - DONE_UNREAD: 完成但用户还没确认查看
- * - DONE:       已确认查看的完成任务；保留槽位但降低视觉权重
- * - ERROR:     执行错误/桥接错误/验证失败
- * - PAUSED:    当前执行已中断；对话本身仍可继续发起新的执行
- * - STALE:     请求已过期未处理,或状态长时间未更新——绝不能静默消失,必须转到这个可见状态
+ * - IDLE:      Empty slot with no task
+ * - QUEUED:    Submitted but execution has not started
+ * - RUNNING:   Executing without requiring user input
+ * - APPROVAL:  Binary permission request (Approve/Reject are active)
+ * - NEEDS_INPUT: Open-ended question (OPEN/REPLY are active; Approve/Reject remain quiet)
+ * - DONE_UNREAD: Completed but not yet acknowledged by the user
+ * - DONE:       Acknowledged completion; retain the slot with reduced emphasis
+ * - ERROR:     Execution, bridge, or verification failure
+ * - PAUSED:    Current execution interrupted; the conversation can start another execution
+ * - STALE:     Expired request or stale state; remain visible instead of disappearing silently
  */
 export type TaskStatus =
 	| "IDLE"
@@ -48,20 +48,20 @@ export type TaskStatus =
 	| "PAUSED"
 	| "STALE";
 
-/** 待处理请求的风险分级，供桌面详情页展示与决策校验。 */
+/** Pending request risk level for desktop details and decision validation. */
 export type RiskTier = 1 | 2;
 
-/** Approve/Reject 实际会走哪条真实决定路径。 */
+/** The actual decision path used by Approve/Reject. */
 export type DecisionPath = "claude-hook" | "codex-shortcut" | null;
 
 export interface TaskRequest {
 	/** Explicit request addressed to a person, not inferred from tool execution. */
 	humanRequired?: boolean;
-	/** 不可复用的请求 ID。Approve/Reject 必须绑定 (agentId, taskId, requestId) 三元组。 */
+	/** Unique, non-reusable request ID. Approve/Reject must bind to (agentId, taskId, requestId). */
 	requestId: string;
-	/** 请求类型,例如 "permission" | "network" | "file-access" | "input"。也是风险分级的依据之一。 */
+	/** Request type, e.g. "permission" | "network" | "file-access" | "input"; also informs risk classification. */
 	type: string;
-	/** 命令/域名/路径等关键目标——用于 Infobar/按键摘要,也用于风险分级,避免"盲批"。 */
+	/** Command, domain, or path shown in Infobar/key summaries and used to assess risk before approval. */
 	target: string;
 	riskTier: RiskTier;
 	createdAt: number;
@@ -70,8 +70,8 @@ export interface TaskRequest {
 }
 
 /**
- * 中央页渲染"这个任务能做什么操作"只看这个对象,不写 `if (agent === "codex")` 这种判断。
- * capability 只代表当前请求此刻确实存在可用响应通道；持久化记录或观察型事件不能点亮决策键。
+ * The main page derives available actions from this object instead of agent-specific conditionals.
+ * Capabilities require a live response channel; persisted records or observer events cannot enable decision keys.
  */
 export interface TaskCapabilities {
 	/** Capabilities exposed by the untrusted local-device WebSocket client. */
@@ -219,7 +219,7 @@ export interface AppServerStatus {
 	lastError?: string;
 }
 
-/** macOS 上向 Codex Desktop 的准确审批卡发送 Return/Escape 的就绪状态。 */
+/** Readiness to send Return/Escape to the exact Codex Desktop approval card on macOS. */
 export interface CodexApprovalControlStatus {
 	status: "READY" | "PERMISSION_REQUIRED" | "REQUESTING" | "UNAVAILABLE" | "ERROR";
 	lastCheckedAt: number;
@@ -231,27 +231,27 @@ export interface CodexApprovalControlStatus {
 	lastError?: string;
 }
 
-/** 数据来源——用于排障:这条任务状态是从哪个信号源拿到的。 */
+/** Signal source that supplied the task state, for troubleshooting. */
 export type TaskSource = "hook-event" | "catalog-sqlite" | "transcript-tail" | "jsonl-tail" | "app-server-events" | "mock";
 
 export interface Task {
-	/** Daemon 分配的稳定 ID,在该 Session/Thread 生命周期内不变。 */
+	/** Stable daemon-assigned ID for the lifetime of the session/thread. */
 	taskId: string;
-	/** 当前执行实例的稳定 ID；Codex 为 turn_id，Claude 为每次 UserPromptSubmit 生成的 ID。 */
+	/** Stable execution ID: Codex turn_id, or an ID generated for each Claude UserPromptSubmit. */
 	executionId?: string;
-	/** Device Layer 使用的稳定 0-based 槽位。状态变化不能改变这个位置。 */
+	/** Stable zero-based device slot; state changes must not move it. */
 	slot?: number;
 	agent: AgentKind;
 	/** Immutable trust boundary: Observer tasks can never acquire Managed writes. */
 	ownership: TaskOwnership;
-	/** Claude: session_id;Codex: rollout jsonl 标识。 */
+	/** Claude: session_id; Codex: rollout JSONL identifier. */
 	externalId: string;
 	projectId: string;
-	/** 按键第一行,建议 3-9 字符。 */
+	/** First key line; prefer 3–9 characters. */
 	projectLabel: string;
 	/** Original workspace path, kept even when projectId is normalized by config. */
 	cwd?: string;
-	/** 按键第二行,名词/动宾短语,不是完整句子。 */
+	/** Second key line; use a short noun or action phrase. */
 	titleShort: string;
 	/** Current per-conversation reasoning effort, when the local app exposes it. */
 	reasoningEffort?: ReasoningEffort;
@@ -259,13 +259,13 @@ export interface Task {
 	model?: string;
 	status: TaskStatus;
 	/**
-	 * V2 兼容字段。V3 中由 attentionVersion / acknowledgedAttentionVersion 派生，
-	 * Adapter 不再拥有“是否已经提醒过用户”的决定权。
+	 * V2 compatibility field; V3 derives it from attentionVersion / acknowledgedAttentionVersion.
+	 * Adapters no longer decide whether the user has already been notified.
 	 */
 	attentionCount: number;
-	/** 同一任务每产生一次新的待处理事件便递增。由 Daemon Registry 维护并持久化。 */
+	/** Incremented for each new attention event on this task; maintained and persisted by the daemon registry. */
 	attentionVersion?: number;
-	/** 用户已经处理/查看到的 attentionVersion。小于 attentionVersion 时才显示角标。 */
+	/** Last attentionVersion handled or viewed by the user; show a badge only when it trails attentionVersion. */
 	acknowledgedAttentionVersion?: number;
 	/** DONE/ERROR reminders expire automatically; decisions and questions never use this field. */
 	attentionExpiresAt?: number;
@@ -273,7 +273,7 @@ export interface Task {
 	capabilities: TaskCapabilities;
 	progress: TaskProgress;
 	openRef: OpenRef;
-	/** 仅用于本机桌面中断/聚焦；不含命令内容或提示词。 */
+	/** Used only for local desktop interruption/focus; contains no command or prompt text. */
 	processId?: number;
 	reviewRef?: ReviewRef;
 	verifyProfile?: VerifyProfile;
@@ -329,7 +329,7 @@ export interface CreateManagedTaskRequest {
 	effort?: ReasoningEffort;
 }
 
-/** 单个 Adapter 的健康状态。 */
+/** Health of an individual adapter. */
 export interface AdapterStatus {
 	status: "OK" | "DEGRADED" | "OFFLINE" | "DISABLED";
 	lastPollAt: number;
@@ -382,10 +382,10 @@ export interface DesktopIntegrationStatus {
 }
 
 /**
- * 独立于任何单个任务的"系统健康"对象——这是方案里最重要的一条架构决策的落地:
- * 一个任务是否需要关注,和整个系统是否健康,是两件不同的事,不能混在一起。
- * 插件端的整机离线看门狗(见 daemon-client.ts)不依赖这个对象本身
- * (Daemon 死了就发不出任何东西,包括这个对象),但 Daemon 存活时靠它汇报每个 Adapter 的健康度。
+ * System health is independent of any individual task.
+ * Task attention and overall system health must remain separate concepts.
+ * The device-side offline watchdog in daemon-client.ts does not depend on this object:
+ * a stopped daemon cannot send it. While running, the daemon uses it to report adapter health.
  */
 export interface UsageDay { codex: number; claude: number; }
 export interface DeviceSlot { taskId: string; executionId: string; slot: number; durationMs: number; }
@@ -400,7 +400,7 @@ export interface SystemStatus {
 	codexAppServer?: AppServerStatus;
 	/** Optional for backwards-compatible snapshots and non-desktop daemon launches. */
 	codexApprovalControl?: CodexApprovalControlStatus;
-	/** 0 → 设备应显示 SETUP 状态,而不是 IDLE 或 OFFLINE。 */
+	/** 0 means the device should show SETUP rather than IDLE or OFFLINE. */
 	configuredProjectCount: number;
 	/** Optional for protocol-v3 compatibility with older daemons. */
 	monitoringScope?: "all-projects";
@@ -418,21 +418,21 @@ export interface SystemStatus {
 	reasoningDefaults?: Partial<Record<AgentKind, ReasoningEffort>>;
 }
 
-/** 每个 Agent 各自维护当前选中项,互不覆盖——对应方案 §8.5 "双 Agent 不互相打断"的规则。 */
+/** Each agent keeps its own selection without overwriting the other agent. */
 export interface UiFocus {
 	selectedTaskId: Record<AgentKind, string | null>;
-	/** 当前中央控制页操作的 Agent；与两个 Agent 各自的 selectedTask 分开保存。 */
+	/** Agent targeted by the main control page, stored separately from each agent's selectedTask. */
 	activeAgent: AgentKind | null;
-	/** New Chat 的持久目标；只由成功点击中央 Agent Logo 改变。 */
+	/** Persistent New Chat target; changed only by a successful main-page agent logo action. */
 	newChatAgent: AgentKind;
 }
 
-/** 中央 Agent 汇总键可能需要主动提醒用户的状态。 */
+/** States that may require attention on the main agent summary key. */
 export function isAttentionTask(task: Pick<Task, "status">): boolean {
 	return task.status === "APPROVAL" || task.status === "NEEDS_INPUT" || task.status === "ERROR" || task.status === "DONE_UNREAD";
 }
 
-/** 左右任务页唯一允许显示的“仍在进行中或被用户阻塞”的状态。 */
+/** States eligible for active or user-blocked work on the task pages. */
 export function isLiveTask(task: Pick<Task, "status">): boolean {
 	return task.status === "RUNNING" || task.status === "APPROVAL" || task.status === "NEEDS_INPUT";
 }
@@ -446,7 +446,7 @@ export function taskExecutionKey(task: Pick<Task, "executionId" | "progress" | "
 	return task.executionId ?? String(task.progress.turnStartedAt ?? task.startedAt);
 }
 
-/** 兼容旧快照，同时以 V3 的持久化版本水位为唯一事实源。 */
+/** Support older snapshots while treating V3 persisted version counters as the source of truth. */
 export function isPendingAttentionTask(
 	task: Pick<Task, "status" | "attentionCount" | "attentionVersion" | "acknowledgedAttentionVersion" | "attentionExpiresAt">,
 	now = Date.now(),
@@ -460,14 +460,14 @@ export function isPendingAttentionTask(
 	return version > acknowledged;
 }
 
-/** 中央页可以成为动作上下文的任务：活动任务或尚未验收的完成/错误。 */
+/** Tasks eligible as main-page action context: active work or unacknowledged completion/error. */
 export function isMainContextTask(
 	task: Pick<Task, "status" | "attentionCount" | "attentionVersion" | "acknowledgedAttentionVersion" | "attentionExpiresAt">,
 ): boolean {
 	return isLiveTask(task) || isPendingAttentionTask(task);
 }
 
-/** Agent Logo 是否应该进入强状态；应用进程是否打开不参与判断。 */
+/** Whether the agent logo is active; independent of whether the app process is open. */
 export function isAgentLitTask(
 	task: Pick<Task, "status" | "attentionCount" | "attentionVersion" | "acknowledgedAttentionVersion" | "attentionExpiresAt">,
 ): boolean {

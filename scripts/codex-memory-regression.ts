@@ -11,7 +11,7 @@ const row=(type:string,payload:unknown,at=1)=>JSON.stringify({timestamp:new Date
 try {
  // Arbitrary chunk boundaries, unicode and escaped quotes/backslashes.
  for (const width of [1,2,3,7,65536]) {
-  const values=[{text:'测试🙂 "quoted" \\ \\uABCD\n',nested:{type:"task_complete"}},{text:"x".repeat(262159)+'\\u1234"tail',after:"still readable"}];
+  const values=[{text:'\u6d4b\u8bd5🙂 "quoted" \\ \\uABCD\n',nested:{type:"task_complete"}},{text:"x".repeat(262159)+'\\u1234"tail',after:"still readable"}];
   const parsed:unknown[]=[];const decoder=new BoundedJsonlReader(line=>parsed.push(JSON.parse(line)));
   const bytes=Buffer.from(values.map(value=>JSON.stringify(value)).join("\n")+"\n");
   for(let at=0;at<bytes.length;at+=width)decoder.write(bytes.subarray(at,at+width));

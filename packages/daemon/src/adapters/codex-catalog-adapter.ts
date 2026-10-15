@@ -975,7 +975,7 @@ function userTextFromRecord(record: RolloutRecord): string | undefined {
 }
 
 function preferUserTitle(previous: string | undefined, value: string): string {
- return (!previous || (value.length >= 12 && !/^(执行|继续|开始|好的|确认|可以|同意|按.+方案)/.test(value))) ? value.slice(0,1024) : previous;
+ return (!previous || (value.length >= 12 && !/^(\u6267\u884c|\u7ee7\u7eed|\u5f00\u59cb|\u597d\u7684|\u786e\u8ba4|\u53ef\u4ee5|\u540c\u610f|\u6309.+\u65b9\u6848)/.test(value))) ? value.slice(0,1024) : previous;
 }
 
 function meaningfulUserText(lines: string[]): string | undefined {

@@ -908,12 +908,12 @@ function activityDisplayValue(task: Task | undefined): string {
 	switch (activity.category) {
 		case "thinking": return "THINKING";
 		case "shell":
-			if (/\b(?:test|tests|testing|verify|verifying|verification|check|checks|checking|lint|regression)\b|测试|验证|检查/u.test(label)) return "TESTING";
-			if (/\b(?:build|building|compile|compiling|package|packaging|bundle|assemble)\b|构建|编译|打包/u.test(label)) return "BUILDING";
-			if (/\b(?:install|installing|download|downloading|fetch|fetching)\b|安装|下载/u.test(label)) return "INSTALLING";
+			if (/\b(?:test|tests|testing|verify|verifying|verification|check|checks|checking|lint|regression)\b|\u6d4b\u8bd5|\u9a8c\u8bc1|\u68c0\u67e5/u.test(label)) return "TESTING";
+			if (/\b(?:build|building|compile|compiling|package|packaging|bundle|assemble)\b|\u6784\u5efa|\u7f16\u8bd1|\u6253\u5305/u.test(label)) return "BUILDING";
+			if (/\b(?:install|installing|download|downloading|fetch|fetching)\b|\u5b89\u88c5|\u4e0b\u8f7d/u.test(label)) return "INSTALLING";
 			return "RUNNING";
 		case "file":
-			if (/\b(?:read|reading|inspect|inspecting|open|opening)\b|读取|查看/u.test(label)) return "READING";
+			if (/\b(?:read|reading|inspect|inspecting|open|opening)\b|\u8bfb\u53d6|\u67e5\u770b/u.test(label)) return "READING";
 			return "WRITING";
 		case "search": return "SEARCHING";
 		case "browser": return "BROWSING";

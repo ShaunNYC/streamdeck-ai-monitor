@@ -1,17 +1,17 @@
 /**
- * Stream Deck Neo AI 控制台 — 本地 IPC 协议
+ * Stream Deck Neo AI Console — Local IPC protocol
  *
- * 传输层：本地回环 WebSocket，固定端口，仅监听 127.0.0.1。见 V4 Direct HID 架构的 IPC 约束。
- * 安全模型:每条写入型消息必须携带 token(见 config.ts 里的 token 文件)。
- * 设备协议只暴露选择、打开、验证和回答选择题；审批与中断只走 Electron 内部桥。
+ * Transport: loopback WebSocket on a fixed port, listening only on 127.0.0.1.
+ * Security: every write message must carry a token (see the token file in config.ts).
+ * Device actions cover selection, opening, verification, and multiple-choice answers; approvals and interrupts use the internal Electron bridge.
  */
 
 import type { PendingPlanInput, SystemStatus, Task } from "./types.js";
 
-/** Daemon → Client(插件)的事件推送类型。 */
+/** Daemon → device client event types. */
 export type ServerEventType = "task.updated" | "task.removed" | "system.status" | "system.snapshot" | "ack" | "error";
 
-/** Client(插件)→ Daemon 的动作请求类型。 */
+/** Device client → daemon action request types. */
 export type ClientActionType =
 	| "client.hello"
 	| "action.dismissDeviceTask"
@@ -30,15 +30,15 @@ export type ClientActionType =
 export type MessageType = ServerEventType | ClientActionType;
 
 /**
- * 统一消息封套。写入型动作由 Daemon 按动作类型复核 Agent、任务、请求或执行身份。
+ * Shared message envelope. The daemon checks agent, task, request, or execution identity for each write action.
  */
 export interface IpcEnvelope<TPayload = unknown> {
 	type: MessageType;
-	/** 客户端动作请求自带的关联 ID,便于匹配对应的 ack/error 响应。与 Task.request.requestId 是两个不同的概念。 */
+	/** Client correlation ID for matching ack/error responses; distinct from Task.request.requestId. */
 	requestId?: string;
 	agentId?: string;
 	taskId?: string;
-	/** 写入型动作必填;读取/订阅可以省略但服务端仍会校验连接已认证。 */
+	/** Required for writes; optional for reads/subscriptions, which still require an authenticated connection. */
 	token?: string;
 	payload: TPayload;
 }
@@ -117,7 +117,7 @@ export function createEnvelope<TPayload>(
 	return { type, payload, ...opts };
 }
 
-/** 极简运行时校验——只检查形状,不做业务语义校验(业务校验在 Daemon 的 ipc-server.ts 里做)。 */
+/** Minimal runtime shape check. The daemon ipc-server.ts validates business semantics. */
 export function isIpcEnvelope(value: unknown): value is IpcEnvelope {
 	return (
 		typeof value === "object" &&
@@ -131,7 +131,7 @@ export function encodeEnvelope(envelope: IpcEnvelope): string {
 	return JSON.stringify(envelope);
 }
 
-/** 返回 null 而不是抛异常——调用方(WS onmessage)应该把 null 当成"丢弃这条消息,记一条日志"处理。 */
+/** Return null instead of throwing; WebSocket callers should discard and log invalid messages. */
 export function decodeEnvelope(raw: string): IpcEnvelope | null {
 	try {
 		const parsed = JSON.parse(raw);

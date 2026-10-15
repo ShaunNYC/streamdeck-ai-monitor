@@ -27,7 +27,7 @@ async function main() {
   for(const progress of [{completed:999,total:999,liveTaskCount:1},{completed:23,total:999,liveTaskCount:1,estimatedRemainingMs:9999999999},{completed:99,total:123,liveTaskCount:99,unknownCount:98}]) add(`${agent}-${emphasis}-progress-${progress.total}`,renderMainTile({...base,label:'PROGRESS',process:{kind:'progress',...progress}}));
  }
  for(const agent of ['codex','claude'] as const) for(const status of ['RUNNING','PAUSED','APPROVAL','DONE','ERROR'] as const) {
-  const task:Task={taskId:'layout',externalId:'layout',agent,status,ownership:'observer',projectId:'demo',projectLabel:'Demo',titleShort:'测试超长项目名称 VERY LONG DESCRIPTION',attentionCount:0,capabilities:taskCapabilities(),progress:emptyTaskProgress(),openRef:{kind:'url',value:''},source:'mock',lastEventAt:0,startedAt:0};
+  const task:Task={taskId:'layout',externalId:'layout',agent,status,ownership:'observer',projectId:'demo',projectLabel:'Demo',titleShort:'TEST A VERY LONG PROJECT NAME AND DESCRIPTION',attentionCount:0,capabilities:taskCapabilities(),progress:emptyTaskProgress(),openRef:{kind:'url',value:''},source:'mock',lastEventAt:0,startedAt:0};
   for(const lower of [false,true]) add(`${agent}-${status}-${lower}`,renderTaskColumnKey(task,lower,9999999999,1200));
  }
  const working=layoutText('WORKING',{maxWidth:68,maxLines:1,sizes:[22,20,18,16,14,12]});

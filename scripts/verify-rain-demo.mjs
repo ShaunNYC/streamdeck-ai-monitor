@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const expected = "雨落在窗沿，像夜色写给清晨的一封短信。";
+const expected = "Rain falls on the windowsill like a note from night to morning.";
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const sentencePath = path.join(repositoryRoot, "verify-demo", "rain-sentence.txt");
 const actual = fs.readFileSync(sentencePath, "utf8").trim();

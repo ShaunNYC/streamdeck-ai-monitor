@@ -2,7 +2,7 @@
 	"name": "streamdeck-neo-ai-supervisor",
 	"private": true,
 	"version": "3.3.1",
-	"description": "Stream Deck Neo Direct HID AI Agent 自动提醒与快速决策中心",
+	"description": "AI agent monitor for Elgato Stream Deck Neo on macOS",
 	"workspaces": [
 		"packages/*"
 	],
