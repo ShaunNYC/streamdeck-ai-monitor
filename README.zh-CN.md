@@ -12,6 +12,23 @@
 App Store 提供官方安装版和更新，可用性取决于发布状态及所在商店地区。购买官方版
 可以支持持续开发。本仓库只提供源码，不发布预编译安装包。
 
+## 运行效果
+
+以下展示 Agent Pulse 应用界面与 Stream Deck Neo 屏幕布局，均使用**虚构演示数据**。
+
+**Neo 总览。** 一眼查看 Codex、Claude 的活动、模型信息、计划进度和当天工作时长。
+
+![Stream Deck Neo 总览：Codex、Claude、当前活动、计划进度和当天工作时长](docs/images/neo-overview.jpg)
+
+**Agent 任务页。** 每一列对应一个任务，展示状态、已运行时长和已记录的计划进度。
+蓝色代表 Codex，橙色代表 Claude。
+
+![Codex 与 Claude 的 Neo 任务页，展示运行中、已完成和已暂停的演示任务](docs/images/neo-task-pages.jpg)
+
+**工作时长。** 在 Mac 上查看各 Agent 的每日累计时长与本地历史，Neo 同时显示当天总时长。
+
+![Mac 上的 Agent Pulse 工作时长日历，以及 Neo 上的当天时长显示](docs/images/neo-working-time.jpg)
+
 ## 使用教程
 
 ### 1. 连接 Neo

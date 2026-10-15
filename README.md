@@ -14,6 +14,26 @@ Availability depends on release status and your storefront. Purchasing the app
 supports continued development. This repository provides source code only;
 there are no prebuilt downloads here.
 
+## See it in action
+
+These previews show the Agent Pulse interface and Stream Deck Neo screen layouts
+using **synthetic demo data**.
+
+**Neo overview.** Follow Codex and Claude activity, model information, plan
+progress, and today's working time at a glance.
+
+![Agent Pulse overview showing Codex and Claude, activity, plan progress, and today's working time on Stream Deck Neo](docs/images/neo-overview.jpg)
+
+**Agent task pages.** Each column represents a task, with its status, elapsed
+working time, and recorded plan progress. Blue identifies Codex; orange identifies Claude.
+
+![Codex and Claude task pages showing running, completed, and paused demo tasks on Stream Deck Neo](docs/images/neo-task-pages.jpg)
+
+**Working time.** Review each agent's daily totals and local history on your Mac,
+with today's total also visible on Neo.
+
+![Agent Pulse working time calendar on Mac alongside the Stream Deck Neo overview](docs/images/neo-working-time.jpg)
+
 ## How to use it
 
 ### 1. Connect your Neo
